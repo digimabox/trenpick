@@ -1,8 +1,9 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { LogOut, TrendingUp, Settings } from 'lucide-react'
+import { LogOut, Settings } from 'lucide-react'
 
 async function LogoutButton() {
   async function handleLogout() {
@@ -42,7 +43,18 @@ export default async function DashboardLayout({
         {/* Sidebar */}
         <aside className="w-64 bg-white border-r border-gray-200 min-h-screen">
           <div className="p-6">
-            <h1 className="text-2xl font-bold text-blue-600">Trenpick</h1>
+            <div className="flex items-center gap-2 mb-2">
+              <Image
+                src="/logo.svg"
+                alt="Trenpick Logo"
+                width={48}
+                height={48}
+                className="h-12 w-12"
+              />
+              <h1 className="text-2xl font-bold" style={{ color: "#ff751f" }}>
+                Trenpick
+              </h1>
+            </div>
             <p className="text-sm text-gray-500 mt-1">バズ通知ツール</p>
           </div>
           <nav className="px-4 space-y-2">
@@ -50,7 +62,13 @@ export default async function DashboardLayout({
               href="/dashboard"
               className="flex items-center px-4 py-2 text-gray-900 rounded-lg hover:bg-gray-100 transition-colors"
             >
-              <TrendingUp className="h-5 w-5 mr-3" />
+              <Image
+                src="/logo.svg"
+                alt="Trend"
+                width={40}
+                height={40}
+                className="h-10 w-10 mr-3"
+              />
               トレンド一覧
             </Link>
             <Link
