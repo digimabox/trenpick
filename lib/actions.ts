@@ -115,6 +115,32 @@ export async function saveAlertSettings(formData: FormData) {
     return { success: false, message: 'ログインが必要です' }
   }
 
+  // profilesレコードが存在するか確認
+  const { data: existingProfile, error: profileCheckError } = await supabase
+    .from('profiles')
+    .select('id')
+    .eq('id', user.id)
+    .single()
+
+  // profilesレコードが存在しない場合は作成
+  if (!existingProfile) {
+    const { error: profileError } = await supabase
+      .from('profiles')
+      .insert({
+        id: user.id,
+        email: user.email || '',
+        plan: 'free',
+      })
+
+    if (profileError) {
+      console.error('Error creating profile:', profileError)
+      return {
+        success: false,
+        message: 'プロファイルの作成に失敗しました',
+      }
+    }
+  }
+
   const notificationChannel = formData.get('notification_channel') as string
   const discordWebhookUrl = formData.get('discord_webhook_url') as string
   const emailAddress = formData.get('email_address') as string
