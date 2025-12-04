@@ -37,7 +37,7 @@ export function CTA() {
             <Link href="/signup">
               <Button
                 size="lg"
-                variant="secondary"
+                variant="default"
                 className="w-full sm:w-auto text-lg px-8 py-6 h-auto bg-white text-blue-600 hover:bg-gray-100"
               >
                 今すぐ無料で始める
