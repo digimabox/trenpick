@@ -5,7 +5,10 @@ import { TrendingUp, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 import { seedTrends } from '@/lib/actions'
 
-async function getTrends() {
+async function getTrends(): Promise<{
+  error: 'TABLE_NOT_FOUND' | 'UNKNOWN' | null
+  data: Array<any>
+}> {
   const supabase = await createClient()
   const today = new Date().toISOString().split('T')[0]
 
@@ -18,14 +21,23 @@ async function getTrends() {
 
   if (error) {
     console.error('Error fetching trends:', error)
-    return []
+    // テーブルが存在しない場合のエラー
+    if (error.code === 'PGRST205') {
+      return { error: 'TABLE_NOT_FOUND', data: [] }
+    }
+    return { error: 'UNKNOWN', data: [] }
   }
 
-  return data || []
+  // 確実に配列を返す
+  const trendsArray = Array.isArray(data) ? data : []
+  return { error: null, data: trendsArray }
 }
 
 export default async function DashboardPage() {
-  const trends = await getTrends()
+  const result = await getTrends()
+  const hasTableError = result.error === 'TABLE_NOT_FOUND'
+  // 確実に配列になるようにする
+  const trends = Array.isArray(result.data) ? result.data : []
 
   return (
     <div className="space-y-6">
@@ -44,7 +56,31 @@ export default async function DashboardPage() {
         </form>
       </div>
 
-      {trends.length === 0 ? (
+      {hasTableError ? (
+        <Card>
+          <CardContent className="py-12 text-center">
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-yellow-800 mb-2">
+                データベースのセットアップが必要です
+              </h3>
+              <p className="text-yellow-700 mb-4">
+                <code>trends</code>テーブルが見つかりません。Supabaseでマイグレーションを実行してください。
+              </p>
+              <div className="bg-white rounded p-4 text-left text-sm">
+                <p className="font-semibold mb-2">手順:</p>
+                <ol className="list-decimal list-inside space-y-1 text-gray-700">
+                  <li>Supabaseダッシュボードにログイン</li>
+                  <li>SQL Editorを開く</li>
+                  <li>
+                    <code>supabase/migrations/0000_init.sql</code>
+                    の内容をコピーして実行
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      ) : trends.length === 0 ? (
         <Card>
           <CardContent className="py-12 text-center">
             <TrendingUp className="h-12 w-12 text-gray-400 mx-auto mb-4" />
