@@ -48,14 +48,14 @@ export default async function DashboardLayout({
           <nav className="px-4 space-y-2">
             <Link
               href="/dashboard"
-              className="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
+              className="flex items-center px-4 py-2 text-gray-900 rounded-lg hover:bg-gray-100 transition-colors"
             >
               <TrendingUp className="h-5 w-5 mr-3" />
               トレンド一覧
             </Link>
             <Link
               href="/settings"
-              className="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
+              className="flex items-center px-4 py-2 text-gray-900 rounded-lg hover:bg-gray-100 transition-colors"
             >
               <Settings className="h-5 w-5 mr-3" />
               設定
@@ -68,7 +68,7 @@ export default async function DashboardLayout({
           {/* Header */}
           <header className="bg-white border-b border-gray-200 px-6 py-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold">ダッシュボード</h2>
+              <h2 className="text-lg font-semibold text-gray-900">ダッシュボード</h2>
               <div className="flex items-center gap-4">
                 <span className="text-sm text-gray-600">{user.email}</span>
                 <LogoutButton />

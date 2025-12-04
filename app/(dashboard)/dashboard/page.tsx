@@ -43,7 +43,7 @@ export default async function DashboardPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">トレンド一覧</h1>
+          <h1 className="text-3xl font-bold text-gray-900">トレンド一覧</h1>
           <p className="text-gray-600 mt-1">
             今日のTikTok Shopでバズり始めた商品
           </p>
