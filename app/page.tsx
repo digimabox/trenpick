@@ -16,6 +16,6 @@ export default function LandingPage() {
       <Pricing />
       <CTA />
       <Footer />
-    </main>
+      </main>
   );
 }
